@@ -1,0 +1,38 @@
+# Docker compose
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # Porta AMQP
+      - "15672:15672"   # Painel Web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  assinante:
+    build: ./assinante
+    depends_on:
+      - rabbitmq
+
+  reserva:
+    build: ./reserva
+    depends_on:
+      - rabbitmq
+
+  pagamento:
+    build: ./pagamento
+    depends_on:
+      - rabbitmq
+
+  bilhete:
+    build: ./bilhete
+    depends_on:
+      - rabbitmq
+
+  marketing:
+    build: ./marketing
+    depends_on:
+      - rabbitmq
